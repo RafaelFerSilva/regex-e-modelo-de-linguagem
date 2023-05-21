@@ -2,11 +2,15 @@ import pandas as pd
 import re
 from timeit import timeit
 
-dados_portugues =  pd.read_csv("base_dados/stackoverflow_portugues.csv")
+dados_portugues = pd.read_csv("base_dados/stackoverflow_portugues.csv")
 dados_ingles = pd.read_csv("base_dados/stackoverflow_ingles.csv")
 dados_espanhol = pd.read_csv("base_dados/stackoverflow_espanhol.csv")
 
 questao_portugues = dados_portugues.Questão[5]
+questao_espanhol = dados_espanhol.Questão[5]
+questao_ingles = dados_ingles.Questão[5]
+
+
 # print(questao_portugues)
 
 # Retorna uma lista com todas as tags html no texto
@@ -28,12 +32,22 @@ questao_portugues = dados_portugues.Questão[5]
 # print(retorno_compile)
 
 # Comparando os métodos
-setup = """import re"""
-tempo = timeit("""re.search(r"70", "89745615749846541987945615749841568945679854170")""", setup)
-print(tempo)
+# setup = """import re"""
+# tempo = timeit("""re.search(r"70", "89745615749846541987945615749841568945679854170")""", setup)
+# print(tempo)
+#
+# setup = """import re
+# regex = re.compile(r"70")"""
+# tempo = timeit("""regex.search("89745615749846541987945615749841568945679854170")""", setup)
+# print(tempo)
 
-setup = """import re 
-regex = re.compile(r"70")"""
-tempo = timeit("""regex.search("89745615749846541987945615749841568945679854170")""", setup)
-print(tempo)
+def remover(textos, regex):
+    if type(textos) == str:
+        return regex.sub("", textos)
+    else:
+        return [regex.sub("", texto) for texto in textos]
 
+
+regex_html = re.compile(r"<.*?>")
+questao_sem_tag = remover(questao_ingles, regex_html)
+print(questao_sem_tag)
