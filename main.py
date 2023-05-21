@@ -48,6 +48,16 @@ def remover(textos, regex):
         return [regex.sub("", texto) for texto in textos]
 
 
-regex_html = re.compile(r"<.*?>")
-questao_sem_tag = remover(questao_ingles, regex_html)
-print(questao_sem_tag)
+def substituir_codigo(textos, regex):
+    if type(textos) == str:
+        return regex.sub("CODE", textos)
+    else:
+        return [regex.sub("CODE", texto) for texto in textos]
+
+
+# questao_sem_tag = remover(questao_ingles, regex_html)
+# print(questao_sem_tag)
+
+regex_code = re.compile(r"<code>(.|(\n))*?</code>")
+questao_sem_code = substituir_codigo(questao_portugues, regex_code)
+print(questao_sem_code)
